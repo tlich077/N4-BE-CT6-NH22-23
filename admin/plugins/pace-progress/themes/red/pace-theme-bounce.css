@@ -1,0 +1,42 @@
+ apartment-threaded, attempting multi-threaded
+2022-11-03T15:17:34.982+07:00| inst-build-6661328| E2: VNLStartupCOM: security specification failed since already set (ignoring)
+2022-11-03T15:17:34.982+07:00| inst-build-6661328| I2: WMI_ConnectToWMI: Connecting to WMI server
+2022-11-03T15:17:34.983+07:00| inst-build-6661328| I2: WMI_ConnectToWMI: Connected to WMI server
+2022-11-03T15:17:34.983+07:00| inst-build-6661328| E1: AdjustSecurity: security query failed: 0x80004002 0x00000000
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| E2: QueryBroadcomTeamingStateWMI: requested class does not exist
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| E2: QueryBroadcomTeamingStateReg: Provider isn't broadcom
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| E2: QueryBroadcomTeamingStateReg: Provider isn't broadcom
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| E2: QueryBroadcomTeamingStateReg: Provider isn't broadcom
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| E2: QueryBroadcomTeamingStateReg: Provider isn't broadcom
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| E2: QueryBroadcomTeamingStateReg: Provider isn't broadcom
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| E2: QueryBroadcomTeamingStateReg: Provider isn't broadcom
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| E2: QueryBroadcomTeamingStateReg: Provider isn't broadcom
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| E2: QueryBroadcomTeamingStateReg: Provider isn't broadcom
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| E2: QueryBroadcomTeamingStateReg: Provider isn't broadcom
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| E2: QueryBroadcomTeamingStateReg: Provider isn't broadcom
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| E2: QueryBroadcomTeamingStateReg: Provider isn't broadcom
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| E2: QueryBroadcomTeamingStateReg: Provider isn't broadcom
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| E2: QueryBroadcomTeamingStateReg: Provider isn't broadcom
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| E2: QueryBroadcomTeamingStateReg: Provider isn't broadcom
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| E2: QueryBroadcomTeamingStateReg: Provider isn't broadcom
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| E2: QueryBroadcomTeamingStateReg: Provider isn't broadcom
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| E2: QueryBroadcomTeamingStateReg: Provider isn't broadcom
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| E2: SubStringPresentInRegValue: couldn't query 'ProviderName' in registry
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| E2: QueryBroadcomTeamingStateReg: Provider isn't broadcom
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| I2: QueryBroadcomTeamingState: obtained bcom state using registry (please install Broadcom's WMI module)
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| I2: VNL_QueryTeamingState: disabling any teamed flags for {71F897D7-EB7C-4D8D-89DB-AC80D9DD2270}
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| I2: VNL_QueryTeamingState: disabling any teamed flags for {29898C9D-B0A4-4FEF-BDB6-57A562022CEE}
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| I2: VNL_QueryTeamingState: disabling any teamed flags for {E43D242B-9EAB-4626-A952-46649FBB939A}
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| I2: VNL_QueryTeamingState: disabling any teamed flags for {DF4A9D2C-8742-4EB1-8703-D395C4183F33}
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| I2: VNL_QueryTeamingState: disabling any teamed flags for {8E301A52-AFFA-4F49-B9CA-C79096A1A056}
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| I2: VNL_QueryTeamingState: disabling any teamed flags for {9A399D81-2EAD-4F23-BCDD-637FC13DCD51}
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| I2: VNL_QueryTeamingState: disabling any teamed flags for {5BF54C7E-91DA-457D-80BF-333677D7E316}
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| I2: VNL_QueryTeamingState: disabling any teamed flags for {2C521B82-D1FF-4D97-8664-2AC5D8F09F94}
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| I2: VNL_QueryTeamingState: disabling any teamed flags for {2CAA64ED-BAA3-4473-B637-DEC65A14C8AA}
+2022-11-03T15:17:34.987+07:00| inst-build-6661328| I2: VNL_QueryTeamingState: disabling any teamed flags for {9720DCA6-B07B-4BF3-8B49-D324D13A59E2}
+2022-11-03T15:17:34.988+07:00| inst-build-6661328| I2: VNL_QueryTeamingState: disabling any teamed flags for {78032B7E-4968-42D3-9F37-287EA86C0AAA}
+2022-11-03T15:17:34.988+07:00| inst-build-6661328| I2: VNL_QueryTeamingState: disabling any teamed flags for {0886852F-B0A6-4459-A584-3683F60CC850}
+2022-11-03T15:17:34.988+07:00| inst-build-6661328| I2: VNL_QueryTeamingState: disabling any teamed flags for {907B392C-48D5-4D5E-9048-AAFFA4C73996}
+2022-11-03T15:17:34.988+07:00| inst-build-6661328| I2: VNL_QueryTeamingState: disabling any teamed flags for {6738837C-5536-48F0-BEF0-094FA0BD96E6}
+2022-11-03T15:17:34.988+07:00| inst-build-6661328| I2: VNL_QueryTeamingState: disabling any teamed flags for {E2CA4569-D5BA-4A2C-B536-4025247216DC}
+2022-11-

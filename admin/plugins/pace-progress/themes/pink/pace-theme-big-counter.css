@@ -1,0 +1,22 @@
+     * @return array
+     */
+    protected function performConfigChecksServers(
+        $cookieAuthUsed,
+        $blowfishSecret,
+        $blowfishSecretSet
+    ) {
+        $serverCnt = $this->cfg->getServerCount();
+        $isCookieAuthUsed = (int) $cookieAuthUsed;
+        for ($i = 1; $i <= $serverCnt; $i++) {
+            $cookieAuthServer = ($this->cfg->getValue('Servers/' . $i . '/auth_type') === 'cookie');
+            $isCookieAuthUsed |= (int) $cookieAuthServer;
+            $serverName = $this->performConfigChecksServersGetServerName(
+                $this->cfg->getServerName($i),
+                $i
+            );
+            $serverName = htmlspecialchars($serverName);
+
+            [$blowfishSecret, $blowfishSecretSet] = $this->performConfigChecksServersSetBlowfishSecret(
+                $blowfishSecret,
+                $cookieAuthServer,
+                $bl

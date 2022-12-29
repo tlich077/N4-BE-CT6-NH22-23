@@ -1,0 +1,70 @@
+b >>. If you have a script at C<< ~/mydir1/scripts/myscript.pl >>,
+you need to tell it where to find the modules you installed for it at C<<
+~/mydir1/lib >>.
+
+In C<< ~/mydir1/scripts/myscript.pl >>:
+
+  use strict;
+  use warnings;
+  use local::lib "$FindBin::Bin/..";  ### points to ~/mydir1 and local::lib finds lib
+  use lib "$FindBin::Bin/../lib";     ### points to ~/mydir1/lib
+
+Put this before any BEGIN { ... } blocks that require the modules you installed.
+
+=head2 Differences when using this module under Win32
+
+To set up the proper environment variables for your current session of
+C<CMD.exe>, you can use this:
+
+  C:\>perl -Mlocal::lib
+  set PERL_MB_OPT=--install_base C:\DOCUME~1\ADMINI~1\perl5
+  set PERL_MM_OPT=INSTALL_BASE=C:\DOCUME~1\ADMINI~1\perl5
+  set PERL5LIB=C:\DOCUME~1\ADMINI~1\perl5\lib\perl5
+  set PATH=C:\DOCUME~1\ADMINI~1\perl5\bin;%PATH%
+
+  ### To set the environment for this shell alone
+  C:\>perl -Mlocal::lib > %TEMP%\tmp.bat && %TEMP%\tmp.bat && del %TEMP%\tmp.bat
+  ### instead of $(perl -Mlocal::lib=./)
+
+If you want the environment entries to persist, you'll need to add them to the
+Control Panel's System applet yourself or use L<App::local::lib::Win32Helper>.
+
+The "~" is translated to the user's profile directory (the directory named for
+the user under "Documents and Settings" (Windows XP or earlier) or "Users"
+(Windows Vista or later)) unless $ENV{HOME} exists. After that, the home
+directory is translated to a short name (which means the directory must exist)
+and the subdirectories are created.
+
+=head3 PowerShell
+
+local::lib also supports PowerShell, and can be used with the
+C<Invoke-Expression> cmdlet.
+
+  Invoke-Expression "$(perl -Mlocal::lib)"
+
+=head1 RATIONALE
+
+The version of a Perl package on your machine is not always the version you
+need.  Obviously, the best thing to do would be to update to the version you
+need.  However, you might be in a situation where you're prevented from doing
+this.  Perhaps you don't have system administrator privileges; or perhaps you
+are using a package management system such as Debian, and nobody has yet gotten
+around to packaging up the version you need.
+
+local::lib solves this problem by allowing you to create your own directory of
+Perl packages downloaded from CPAN (in a multi-user system, this would typically
+be within your own home directory).  The existing system Perl installation is
+not affected; you simply invoke Perl with special options so that Perl uses the
+packages in your own local package directory rather than the system packages.
+local::lib arranges things so that your locally installed version of the Perl
+packages takes precedence over the system installation.
+
+If you are using a package management system (such as Debian), you don't need to
+worry about Debian and CPAN stepping on each other's toes.  Your local version
+of the packages will be written to an entirely separate directory from those
+installed by Debian.
+
+=head1 DESCRIPTION
+
+This module provides a quick, convenient way of bootstrapping a user-local Perl
+module library located wit

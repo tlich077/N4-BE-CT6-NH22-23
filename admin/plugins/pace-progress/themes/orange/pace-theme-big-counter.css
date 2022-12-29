@@ -1,0 +1,30 @@
+width');
+        var height = $(gisSvg).attr('height');
+        // zooming in keeping the center unmoved.
+        x = width / 2 - (width / 2 - x) * zoomFactor;
+        y = height / 2 - (height / 2 - y) * zoomFactor;
+        zoomAndPan();
+    });
+
+    $(document).on('click', '#zoom_world', function (e) {
+        e.preventDefault();
+        scale = 1;
+        x = defaultX;
+        y = defaultY;
+        zoomAndPan();
+    });
+
+    $(document).on('click', '#zoom_out', function (e) {
+        e.preventDefault();
+        // zoom out
+        scale /= zoomFactor;
+
+        var width = $(gisSvg).attr('width');
+        var height = $(gisSvg).attr('height');
+        // zooming out keeping the center unmoved.
+        x = width / 2 - (width / 2 - x) / zoomFactor;
+        y = height / 2 - (height / 2 - y) / zoomFactor;
+        zoomAndPan();
+    });
+
+    $(document).on('click', '#le

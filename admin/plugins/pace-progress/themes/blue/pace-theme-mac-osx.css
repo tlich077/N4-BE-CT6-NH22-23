@@ -1,0 +1,176 @@
+= ? OR lit() )
+  [ 1, 2, 3, 'value' ]
+
+=head1 Default Expanders
+
+=head2 bool
+
+Turns the old -bool syntax into the value expression, i.e.
+
+  # expr
+  { -bool => { -ident => 'foo' } }
+
+  # aqt
+  { -ident => [ 'foo' ] }
+
+  # query
+  foo
+  []
+
+behaves the same way as the now-directly-supported
+
+  # expr
+  { -ident => 'foo' }
+
+  # aqt
+  { -ident => [ 'foo' ] }
+
+  # query
+  foo
+  []
+
+=head2 row
+
+Expands the elements of the value arrayref:
+
+  # expr
+  { -row => [ 1, { -ident => 'foo' }, 2, 3 ] }
+
+  # aqt
+  { -row => [
+      { -bind => [ undef, 1 ] }, { -ident => [ 'foo' ] },
+      { -bind => [ undef, 2 ] }, { -bind => [ undef, 3 ] },
+  ] }
+
+  # query
+  (?, foo, ?, ?)
+  [ 1, 2, 3 ]
+
+=head2 op
+
+If an expander is registered for the op name, delegates to the expander; if
+not, expands the argument values:
+
+  # expr
+  { -op => [ 'ident', 'foo.bar' ] }
+
+  # aqt
+  { -ident => [ 'foo', 'bar' ] }
+
+  # query
+  foo.bar
+  []
+
+  # expr
+  { -op => [ '=', { -ident => 'foo' }, 3 ] }
+
+  # aqt
+  { -op => [ '=', { -ident => [ 'foo' ] }, { -bind => [ undef, 3 ] } ] }
+
+  # query
+  foo = ?
+  [ 3 ]
+
+=head2 func
+
+Expands the argument values:
+
+  # expr
+  { -func => [ 'coalesce', { -ident => 'thing' }, 'fallback' ] }
+
+  # aqt
+  { -func => [
+      'coalesce', { -ident => [ 'thing' ] },
+      { -bind => [ undef, 'fallback' ] },
+  ] }
+
+  # query
+  COALESCE(thing, ?)
+  [ 'fallback' ]
+
+=head2 values
+
+A hashref value is expanded as an expression:
+
+  # expr
+  { -values => { -row => [ 1, 2 ] } }
+
+  # aqt
+  { -values => [
+      { -row => [ { -bind => [ undef, 1 ] }, { -bind => [ undef, 2 ] } ] }
+  ] }
+
+  # query
+  VALUES (?, ?)
+  [ 1, 2 ]
+
+An arrayref value's elements are either expressions or arrayrefs to be
+treated as rows:
+
+  # expr
+  { -values => [ { -row => [ 1, 2 ] }, [ 3, 4 ] ] }
+
+  # aqt
+  { -values => [
+      { -row => [ { -bind => [ undef, 1 ] }, { -bind => [ undef, 2 ] } ] },
+      { -row => [ { -bind => [ undef, 3 ] }, { -bind => [ undef, 4 ] } ] },
+  ] }
+
+  # query
+  VALUES (?, ?), (?, ?)
+  [ 1, 2, 3, 4 ]
+
+=head2 list
+
+Expects a value or an arrayref of values, expands them, and returns just
+the expanded aqt for a single entry or a comma operator for multiple:
+
+  # expr
+  { -list => [ { -ident => 'foo' } ] }
+
+  # aqt
+  { -op => [ ',', { -ident => [ 'foo' ] } ] }
+
+  # query
+  foo
+  []
+
+  # expr
+  { -list => [ { -ident => 'foo' }, { -ident => 'bar' } ] }
+
+  # aqt
+  { -op => [ ',', { -ident => [ 'foo' ] }, { -ident => [ 'bar' ] } ] }
+
+  # query
+  foo, bar
+  []
+
+=head2 between op
+
+The RHS of between must either be a pair of exprs/plain values, or a single
+literal expr:
+
+  # expr
+  { -between => [ 'size', 3, { -ident => 'max_size' } ] }
+
+  # aqt
+  { -op => [
+      'between', { -ident => [ 'size' ] }, { -bind => [ undef, 3 ] },
+      { -ident => [ 'max_size' ] },
+  ] }
+
+  # query
+  ( size BETWEEN ? AND max_size )
+  [ 3 ]
+
+  # expr
+  { size => { -between => [ 3, { -ident => 'max_size' } ] } }
+
+  # aqt
+  { -op => [
+      'between', { -ident => [ 'size' ] }, { -bind => [ 'size', 3 ] },
+      { -ident => [ 'max_size' ] },
+  ] }
+
+  # query
+  ( size B

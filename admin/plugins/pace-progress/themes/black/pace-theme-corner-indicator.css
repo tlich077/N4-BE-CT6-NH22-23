@@ -1,0 +1,71 @@
+ CTRL-RETURN to send commands
+... strange,
+but I didn't attempt to fix that, as we are only interested in the
+built lib and headers.
+
+At the 'mysql>' prompt do a quick check:
+
+  mysql> use mysql
+  mysql> show tables;
+  mysql> select * from db;
+  mysql> exit
+
+You are now ready to build DBD::mysql!
+
+=head3 compile DBD::mysql
+
+download and extract DBD-mysql-<version>.tar.gz from CPAN
+
+cd into unpacked dir DBD-mysql-<version>
+you probably did that already, if you are reading this!
+
+  cp /usr/local/mysql/bin/mysql_config .
+
+This copies the executable script mentioned in the DBD::mysql docs
+from your just built Cywin/MySQL client directory; it knows about
+your Cygwin installation, especially about the right libraries to link
+with.
+
+  perl Makefile.PL --testhost=127.0.0.1
+
+The --testhost=127.0.0.1 parameter again forces a TCP/IP connection
+to the MySQL server on the local host instead of a pipe/socket
+connection for the 'make test' phase.
+
+  make
+
+This should run without error
+
+  make test
+  make install
+
+This installs DBD::mysql into the Perl hierarchy.
+
+
+=head1 KNOWN PROBLEMS
+
+=head2 no gzip on your system
+
+Some Linux distributions don't come with a gzip library by default.
+Running "make" terminates with an error message like
+
+  LD_RUN_PATH="/usr/lib/mysql:/lib:/usr/lib" gcc
+    -o blib/arch/auto/DBD/mysql/mysql.so  -shared
+    -L/usr/local/lib dbdimp.o mysql.o -L/usr/lib/mysql
+    -lmysqlclient -lm -L/usr/lib/gcc-lib/i386-redhat-linux/2.96
+    -lgcc -lz
+  /usr/bin/ld: cannot find -lz
+  collect2: ld returned 1 exit status
+  make: *** [blib/arch/auto/DBD/mysql/mysql.so] Error 1
+
+If this is the case for you, install an RPM archive like
+libz-devel, libgz-devel, zlib-devel or gzlib-devel or something
+similar.
+
+=head2 different compiler for mysql and perl
+
+If Perl was compiled with gcc or egcs, but MySQL was compiled
+with another compiler or on another system, an error message like
+this is very likely when running "Make test":
+
+  t/00base............install_driver(mysql) failed

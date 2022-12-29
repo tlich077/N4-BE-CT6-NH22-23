@@ -1,0 +1,24 @@
+.img-cart {
+    display: block;
+    max-width: 30px !important;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+table tr td{
+    border:1px solid #FFFFFF;   
+}
+
+table tr th {
+    background:#eee;    
+}
+.img-circle{
+    width: 30%;
+}
+
+.panel-shadow {
+    box-shadow: rgba(0, 0, 0, 0.3) 7px 7px 7px;
+}
+.delete-all{
+    font-weight: bold;
+}

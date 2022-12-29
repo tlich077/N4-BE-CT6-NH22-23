@@ -1,0 +1,162 @@
+     $title = Descriptions::get('Servers/1/AllowNoPassword')
+                . ' (' . $serverName . ')';
+            SetupIndex::messagesSet(
+                'notice',
+                'Servers/' . $i . '/AllowNoPassword',
+                $title,
+                __('You allow for connecting to the server without a password.')
+                . ' ' . $sSecurityInfoMsg
+            );
+        }
+
+        return [
+            (bool) $isCookieAuthUsed,
+            $blowfishSecret,
+            $blowfishSecretSet,
+        ];
+    }
+
+    /**
+     * Set blowfish secret
+     *
+     * @param string|null $blowfishSecret    Blowfish secret
+     * @param bool        $cookieAuthServer  Cookie auth is used
+     * @param bool        $blowfishSecretSet Blowfish secret set
+     *
+     * @return array
+     */
+    protected function performConfigChecksServersSetBlowfishSecret(
+        $blowfishSecret,
+        $cookieAuthServer,
+        $blowfishSecretSet
+    ): array {
+        if ($cookieAuthServer && $blowfishSecret === null) {
+            $blowfishSecretSet = true;
+            $this->cfg->set('blowfish_secret', Util::generateRandom(32));
+        }
+
+        return [
+            $blowfishSecret,
+            $blowfishSecretSet,
+        ];
+    }
+
+    /**
+     * Define server name
+     *
+     * @param string $serverName Server name
+     * @param int    $serverId   Server id
+     *
+     * @return string Server name
+     */
+    protected function performConfigChecksServersGetServerName(
+        $serverName,
+        $serverId
+    ) {
+        if ($serverName === 'localhost') {
+            return $serverName . ' [' . $serverId . ']';
+        }
+
+        return $serverName;
+    }
+
+    /**
+     * Perform config checks for zip part.
+     */
+    protected function performConfigChecksZips(): void
+    {
+        $this->performConfigChecksServerGZipdump();
+        $this->performConfigChecksServerBZipdump();
+        $this->performConfigChecksServersZipdump();
+    }
+
+    /**
+     * Perform config checks for zip part.
+     */
+    protected function performConfigChecksServersZipdump(): void
+    {
+        // $cfg['ZipDump']
+        // requires zip_open in import
+        if ($this->cfg->getValue('ZipDump') && ! $this->functionExists('zip_open')) {
+            SetupIndex::messagesSet(
+                'error',
+                'ZipDump_import',
+                Descriptions::get('ZipDump'),
+                Sanitize::sanitizeMessage(sprintf(
+                    __(
+                        '%sZip decompression%s requires functions (%s) which are unavailable on this system.'
+                    ),
+                    '[a@' . Url::getCommon(['page' => 'form', 'formset' => 'Features']) . '#tab_Import_export]',
+                    '[/a]',
+                    'zip_open'
+                ))
+            );
+        }
+
+        // $cfg['ZipDump']
+        // requires gzcompress in export
+        if (! $this->cfg->getValue('ZipDump') || $this->functionExists('gzcompress')) {
+            return;
+        }
+
+        SetupIndex::messagesSet(
+            'error',
+            'ZipDump_export',
+            Descriptions::get('ZipDump'),
+            Sanitize::sanitizeMessage(sprintf(
+                __(
+                    '%sZip compression%s requires functions (%s) which are unavailable on this system.'
+                ),
+                '[a@' . Url::getCommon(['page' => 'form', 'formset' => 'Features']) . '#tab_Import_export]',
+                '[/a]',
+                'gzcompress'
+            ))
+        );
+    }
+
+    /**
+     * Check config of servers
+     *
+     * @param bool   $cookieAuthUsed    Cookie auth is used
+     * @param bool   $blowfishSecretSet Blowfish secret set
+     * @param string $blowfishSecret    Blowfish secret
+     */
+    protected function performConfigChecksCookieAuthUsed(
+        $cookieAuthUsed,
+        $blowfishSecretSet,
+        $blowfishSecret
+    ): void {
+        // $cfg['blowfish_secret']
+        // it's required for 'cookie' authentication
+        if (! $cookieAuthUsed) {
+            return;
+        }
+
+        if ($blowfishSecretSet) {
+            // 'cookie' auth used, blowfish_secret was generated
+            SetupIndex::messagesSet(
+                'notice',
+                'blowfish_secret_created',
+                Descriptions::get('blowfish_secret'),
+                Sanitize::sanitizeMessage(__(
+                    'You didn\'t have blowfish secret set and have enabled '
+                    . '[kbd]cookie[/kbd] authentication, so a key was automatically '
+                    . 'generated for you. It is used to encrypt cookies; you don\'t need to '
+                    . 'remember it.'
+                ))
+            );
+
+            return;
+        }
+
+        $blowfishWarnings = [];
+        // check length
+        if (strlen($blowfishSecret) < 32) {
+            // too short key
+            $blowfishWarnings[] = __('Key is too short, it should have at least 32 characters.');
+        }
+
+        // check used characters
+        $hasDigits = (bool) preg_match('/\d/', $blowfishSecret);
+        $hasChars = (bool) preg_match('/\S/', $blowfishSecret);
+        $hasN
